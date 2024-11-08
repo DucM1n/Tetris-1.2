@@ -1,7 +1,7 @@
 #include <raylib.h> // Include raylib library
 #include "Game.h"
 #include "Colors.h"
-#include <iostream>
+#include <iostream>ê
 
 typedef enum GameScreen {TITLE = 0, HOW_TO, GAMEPLAY, PAUSE, ENDING} GameScreen;
 double lastUpdateTime = 0;
