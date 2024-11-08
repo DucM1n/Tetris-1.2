@@ -19,7 +19,6 @@ bool EventTrigger(double interval) // Set game pace, higher interval = slower pa
 
 int main()
 {
-    
     InitWindow(650, 820, "raylib Tetris C++"); // Initialization
 
     // GameScreen currentScreen = TITLE;
@@ -75,9 +74,4 @@ int main()
     
     CloseWindow(); // Close window and OpenGL context
     return 0;
-    
-
-    // -------------------------------------------------------------------------
-
-    
 }
