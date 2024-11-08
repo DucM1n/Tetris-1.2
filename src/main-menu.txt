@@ -1,0 +1,159 @@
+InitWindow(650, 820, "raylib Tetris C++"); // Initialization
+    SetTargetFPS(60); // Set desired framerate (frames-per-second)
+    Font font = LoadFontEx("Font/monogram.ttf", 64, 0, 0); // Set font "monogram"
+    GameScreen currentScreen = TITLE; // Set current screen as TITLE
+
+    Game game = Game(); // Call game class constructor
+    char scoreText[10];
+    while(!WindowShouldClose()) {
+
+        UpdateMusicStream(game.music);
+        BeginDrawing();
+        ClearBackground(darkBlue);
+
+        switch(currentScreen)
+            {
+                case TITLE:
+                    {
+                        // TODO: Update TITLE screen variables here
+
+                        if (IsKeyPressed(KEY_ONE) || IsKeyPressed(KEY_KP_1))
+                        {
+                            currentScreen = GAMEPLAY;
+                            game.Reset();
+                        }
+                        if (IsKeyPressed(KEY_TWO) || IsKeyPressed(KEY_KP_2))
+                        {
+                            currentScreen = HOW_TO;
+                        }
+                        if (IsKeyPressed(KEY_THREE) || IsKeyPressed(KEY_KP_3))
+                        {
+                        }
+
+                        // TODO: Draw TITLE screen here!
+
+                        DrawTextEx(font, "1. NEW GAME", {50, 50}, 40, 2, WHITE);
+                        DrawTextEx(font, "2. HOW TO PLAY", {50, 100}, 40, 2, WHITE);
+                        DrawTextEx(font, "3. QUIT", {50, 150}, 40, 2, WHITE);
+                        DrawTextEx(font, "Press 1, 2, 3 to pick :)", {50, 200}, 40, 2, WHITE);
+                    } 
+                    break;
+
+                case GAMEPLAY:
+                    {
+                        // TODO: Update GAMEPLAY screen variables here
+
+                        game.HandleInput();
+
+                        if (EventTrigger(0.2))
+                        {
+                            if (game.gamePause)
+                            {
+                                game.MoveBlockDown();
+                            }
+                        }
+
+                        game.Draw();
+
+                        sprintf(scoreText, "%d", game.score);
+                        Vector2 textSize = MeasureTextEx(font, scoreText, 38, 2);
+
+                        // TODO: Draw GAMEPLAY screen here
+
+                        DrawTextEx(font, "Score", {480, 15}, 38, 2, WHITE);
+                        DrawTextEx(font, "Next", {490, 175}, 38, 2, WHITE);
+
+                        DrawRectangleRounded({420, 55, 220, 63}, 0.3, 6, lightBlue);
+                        
+                        DrawTextEx(font, scoreText, {420 + (220 - textSize.x) / 2, 70}, 38, 2, WHITE);
+                        DrawRectangleRounded({420, 215, 220, 230}, 0.3, 6, lightBlue);
+
+                        if (IsKeyPressed(KEY_ENTER))
+                        {
+                            currentScreen = PAUSE;
+                        }
+                        if (game.gameOver)
+                        {
+                            currentScreen = ENDING;
+                        }
+                    }
+                    break;
+
+                case HOW_TO:
+                    {
+                        // TODO: Update HOWTO screen variables here
+
+                        if (IsKeyPressed(KEY_TWO) || IsKeyPressed(KEY_KP_2))
+                        {
+                            currentScreen = TITLE;
+                        }
+
+                        // TODO: Draw HOW_TO screen here!
+
+                        DrawTextEx(font, "Press RIGHT_KEY or LEFT_KEY to move", {30, 40}, 30, 2, WHITE);
+                        DrawTextEx(font, " block sideways.", {30, 80}, 30, 2, WHITE);
+                        DrawTextEx(font, "Press DOWN_KEY to move block downwards", {30, 120}, 30, 2, WHITE);
+                        DrawTextEx(font, " = win 1 POINT.", {30, 160}, 30, 2, WHITE);
+                        DrawTextEx(font, "Press UP_KEY to rotate block.", {30, 200}, 30, 2, WHITE);
+                        DrawTextEx(font, "Clear one line = win 100 POINTS.", {30, 240}, 30, 2, WHITE);
+                        DrawTextEx(font, "Press ENTER midgame to PAUSE.", {30, 280}, 30, 2, WHITE);
+                        DrawTextEx(font, "Press 2 to return :)", {30, 320}, 30, 2, WHITE);
+                    } 
+                    break;
+
+                case PAUSE:
+                    {
+                        // TODO: Update PAUSE screen variables here
+
+                        if (IsKeyPressed(KEY_ONE) || IsKeyPressed(KEY_KP_1))
+                        {
+                            currentScreen = GAMEPLAY;
+                        }
+                        if (IsKeyPressed(KEY_TWO) || IsKeyPressed(KEY_KP_2))
+                        {   
+                            currentScreen = TITLE;
+                        }
+                        if (IsKeyPressed(KEY_THREE) || IsKeyPressed(KEY_KP_3))
+                        {
+                        }
+
+                        // TODO: Draw ENDING screen here!
+
+                        DrawTextEx(font, "1. CONTINUE", {50, 50}, 40, 2, WHITE);
+                        DrawTextEx(font, "2. TO MAIN MENU", {50, 100}, 40, 2, WHITE);
+                        DrawTextEx(font, "3. QUIT", {50, 150}, 40, 2, WHITE);
+                        DrawTextEx(font, "Press 1, 2, 3 to pick :)", {50, 200}, 40, 2, WHITE);
+                    }
+                    break;
+
+                case ENDING:
+                    {
+                        // TODO: Update ENDING screen variables here
+                    
+                        if (IsKeyPressed(KEY_ONE) || IsKeyPressed(KEY_KP_1))
+                        {
+                            currentScreen = TITLE;
+                        } 
+                        if (IsKeyPressed(KEY_TWO) || IsKeyPressed(KEY_KP_2))
+                        {
+                        
+                        } 
+                       
+                        // TODO: Draw ENDING screen here!
+                    
+                        DrawTextEx(font, "GAME OVER", {50, 50}, 60, 2, WHITE);
+                        DrawTextEx(font, "SCORE: ", {50, 120}, 50, 2, WHITE);
+                        DrawTextEx(font, scoreText, {220, 120}, 50, 2, WHITE);
+                        DrawTextEx(font, "1. TO MAIN MENU", {50, 190}, 40, 2, WHITE);
+                        DrawTextEx(font, "2. QUIT", {50, 240}, 40, 2, WHITE);
+                        DrawTextEx(font, "Press 1, 2 to pick :)", {50, 290}, 40, 2, WHITE);
+                    }
+                    break;
+                default: break;
+            }
+            
+        EndDrawing();
+        
+    }
+    CloseWindow(); // Close window and OpenGL context
+    return 0;
